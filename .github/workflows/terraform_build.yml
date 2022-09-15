@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: tf_plan.out
-          path: ./env/tf_plan.out
+          path: ./tf_plan.out
           if-no-files-found: error
           retention-days: 1
     
