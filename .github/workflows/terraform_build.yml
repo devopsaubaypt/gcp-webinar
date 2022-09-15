@@ -28,9 +28,9 @@ jobs:
     name: 'Terraform plan'
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./webinar
+    # defaults:
+    #   run:
+    #     working-directory: ./webinar
 
     steps:
       - name: "Setup - Checkout"
@@ -93,12 +93,11 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: tf_plan.out
-        path: ./webinar/
+        # path: ./webinar/
     
     - name: Terraform Apply
       id: tf_apply
       run: |
-        cd ./webinar
         terraform init
         terraform apply "tf_plan.out"
   
