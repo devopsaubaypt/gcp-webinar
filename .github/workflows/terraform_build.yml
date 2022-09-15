@@ -59,12 +59,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform plan check
+        env: 
+          region: "${{ secrets.REGION }}"
+          zone: "${{ secrets.ZONE }}"
+          project_id: "${{ secrets.PROJECT_ID }}"
+          bucket_name: "${{ secrets.BUCKET_NAME }}"
         run: |
-          terraform plan \
-          -var region="${{ secrets.REGION }}" \
-          -var project_id="${{ secrets.PROJECT_ID }}" \
-          -var bucket_name="${{ secrets.BUCKET_NAME }}" \
-          -out=tf_plan.out
+          terraform plan -out=tf_plan.out
 
       # used on INPUT mode
       # - name: Terraform plan check
