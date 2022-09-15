@@ -61,10 +61,19 @@ jobs:
       - name: Terraform plan check
         run: |
           terraform plan \
-          -var region="${{ github.event.inputs.region }}" \
-          -var project_id="${{ github.event.inputs.project_id }}" \
-          -var bucket_name="${{ github.event.inputs.bucket_name }}" \
+          -var region="${{ secrets.REGION }}" \
+          -var project_id="${{ secrets.PROJECT_ID }}" \
+          -var bucket_name="${{ secrets.BUCKET_NAME }}" \
           -out=tf_plan.out
+
+      # used on INPUT mode
+      # - name: Terraform plan check
+      #   run: |
+      #     terraform plan \
+      #     -var region="${{ github.event.inputs.region }}" \
+      #     -var project_id="${{ github.event.inputs.project_id }}" \
+      #     -var bucket_name="${{ github.event.inputs.bucket_name }}" \
+      #     -out=tf_plan.out
 
       - name: Upload TF Plan
         uses: actions/upload-artifact@v2
