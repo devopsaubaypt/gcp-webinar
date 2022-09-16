@@ -1,0 +1,114 @@
+
+name: Terraform Build - demo
+
+on:
+  push: # every push related to env path
+  workflow_dispatch:  # manual trigger execution
+    inputs:
+      region:
+        required: true
+        type: choice
+        description: default region
+        options: 
+        - europe-west1
+      bucket_name:
+        required: true
+        description: bucket name for this backend
+      project_id:
+        required: true
+        description: project id for this backend
+
+# set bash as default runner 
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  terraform_plan:
+    name: 'Terraform plan'
+    runs-on: ubuntu-latest
+
+    # defaults:
+    #   run:
+    #     working-directory: ./webinar
+
+    steps:
+      - name: "Setup - Checkout"
+        uses: actions/checkout@v2
+
+      - name: GCP Service Account auth
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+
+      - name: Terraform init
+        run: |
+          terraform init
+          terraform get
+
+      - name: Terraform fmt
+        continue-on-error: true
+        run: terraform fmt -recursive -list=true -write=false -diff=true -check=true
+
+      - name: Terraform validate
+        continue-on-error: true
+        run: terraform validate
+
+      - name: Terraform plan check
+        env: 
+          region: "${{ secrets.REGION }}"
+          zone: "${{ secrets.ZONE }}"
+          project_id: "${{ secrets.PROJECT_ID }}"
+          bucket_name: "${{ secrets.BUCKET_NAME }}"
+        run: |
+          terraform plan -out=tf_plan.out
+
+      # used on INPUT mode
+      # - name: Terraform plan check
+      #   run: |
+      #     terraform plan \
+      #     -var region="${{ github.event.inputs.region }}" \
+      #     -var project_id="${{ github.event.inputs.project_id }}" \
+      #     -var bucket_name="${{ github.event.inputs.bucket_name }}" \
+      #     -out=tf_plan.out
+
+      - name: Upload TF Plan
+        uses: actions/upload-artifact@v2
+        with:
+          name: tf_plan.out
+          path: ./tf_plan.out
+          if-no-files-found: error
+          retention-days: 1
+    
+  terraform_apply:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+    needs: terraform_plan
+
+    steps: 
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: GCP Service Account auth
+      id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+    - name: Download TF Plan
+      uses: actions/download-artifact@v3
+      with:
+        name: tf_plan.out
+        # path: ./webinar/
+    
+    - name: Terraform Apply
+      id: tf_apply
+      run: |
+        terraform init
+        terraform apply "tf_plan.out"
+  
+  ## TODO - Manual Destoy
