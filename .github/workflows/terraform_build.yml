@@ -10,7 +10,7 @@ on:
         type: choice
         description: default region
         options: 
-        - europe-west1
+        - us-central1
       bucket_name:
         required: true
         description: bucket name for this backend
@@ -27,10 +27,6 @@ jobs:
   terraform_plan:
     name: 'Terraform plan'
     runs-on: ubuntu-latest
-
-    # defaults:
-    #   run:
-    #     working-directory: ./webinar
 
     steps:
       - name: "Setup - Checkout"
@@ -67,15 +63,6 @@ jobs:
         run: |
           terraform plan -out=tf_plan.out
 
-      # used on INPUT mode
-      # - name: Terraform plan check
-      #   run: |
-      #     terraform plan \
-      #     -var region="${{ github.event.inputs.region }}" \
-      #     -var project_id="${{ github.event.inputs.project_id }}" \
-      #     -var bucket_name="${{ github.event.inputs.bucket_name }}" \
-      #     -out=tf_plan.out
-
       - name: Upload TF Plan
         uses: actions/upload-artifact@v2
         with:
@@ -103,7 +90,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: tf_plan.out
-        # path: ./webinar/
     
     - name: Terraform Apply
       id: tf_apply
