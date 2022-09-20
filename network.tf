@@ -9,38 +9,18 @@ module "network" {
 
   subnets = [
     {
-      subnet_name   = "subnet-pods-01"
+      subnet_name   = "subnet-01"
       subnet_ip     = "10.16.0.0/19"
       subnet_region = var.region
     },
     {
-      subnet_name   = "subnet-pods-02"
+      subnet_name   = "subnet-02"
       subnet_ip     = "10.16.32.0/19"
       subnet_region = var.region
     },
     {
-      subnet_name   = "subnet-pods-03"
+      subnet_name   = "subnet-03"
       subnet_ip     = "10.16.64.0/19"
-      subnet_region = var.region
-    },
-    {
-      subnet_name   = "subnet-services-01"
-      subnet_ip     = "10.16.96.0/19"
-      subnet_region = var.region
-    },
-    {
-      subnet_name   = "subnet-services-02"
-      subnet_ip     = "10.16.128.0/19"
-      subnet_region = var.region
-    },
-    {
-      subnet_name   = "subnet-services-03"
-      subnet_ip     = "10.16.160.0/19"
-      subnet_region = var.region
-    },
-    {
-      subnet_name   = "subnet-01"
-      subnet_ip     = "10.16.192.0/19"
       subnet_region = var.region
     }
   ]

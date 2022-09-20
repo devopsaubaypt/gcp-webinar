@@ -2,6 +2,9 @@
 
 
 module "gke" {
+  depends_on = [
+    module.network
+  ]
   source                     = "terraform-google-modules/kubernetes-engine/google"
   version                    = "23.1.0"
   project_id                 = var.project_id
@@ -10,8 +13,8 @@ module "gke" {
   zones                      = var.zones
   network                    = module.network.network_name
   subnetwork                 = module.network.subnets_names[6]
-  ip_range_services          = module.network.subnets_names[3]
-  ip_range_pods              = module.network.subnets_names[1]
+  ip_range_services          = "10.16.160.0/19"
+  ip_range_pods              = "10.16.192.0/19"
   http_load_balancing        = false
   network_policy             = true
   horizontal_pod_autoscaling = true
