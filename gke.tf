@@ -21,7 +21,6 @@ module "gke" {
     {
       name            = "default-node-pool"
       machine_type    = var.machine_type
-      node_locations  = toset(var.zones)
       min_count       = var.min_count
       max_count       = var.max_count
       disk_type       = "pd-standard"
