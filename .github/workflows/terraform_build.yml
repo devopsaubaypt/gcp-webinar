@@ -2,7 +2,7 @@
 name: Terraform Build
 
 on:
-  push: # every push related to env path
+  # push: # every push related to env path
   workflow_dispatch:  # manual trigger execution
     inputs:
       region:
