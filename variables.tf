@@ -79,5 +79,5 @@ variable "initial_node_count" {
 variable "network_name" {
   type        = string
   description = "Default name for project dedicated network"
-  default     = "Webinar-VPC"
+  default     = "webinar-vpc"
 }
