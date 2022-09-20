@@ -24,11 +24,6 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GCP_SA_KEY }}'
-
-    - name: Download TF Plan
-      uses: actions/download-artifact@v3
-      with:
-        name: tf_plan.out
     
     - name: Terraform destoy
       id: tf_destoy
