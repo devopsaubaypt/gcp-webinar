@@ -12,7 +12,7 @@ module "gke" {
   region                     = var.region
   zones                      = var.zones
   network                    = module.network.network_name
-  subnetwork                 = module.network.subnets_names[6]
+  subnetwork                 = module.network.subnets_names[0]
   ip_range_services          = "10.16.160.0/19"
   ip_range_pods              = "10.16.192.0/19"
   http_load_balancing        = false
