@@ -2,6 +2,7 @@
 name: Terraform Destroy
 
 on:
+  push:
   workflow_dispatch:  # manual trigger execution
 
 # set bash as default runner 
