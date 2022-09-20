@@ -13,8 +13,8 @@ module "gke" {
   zones                      = var.zones
   network                    = module.network.network_name
   subnetwork                 = module.network.subnets_names[0]
-  ip_range_services          = "10.16.160.0/19"
-  ip_range_pods              = "10.16.192.0/19"
+  ip_range_services          = "subnet-services"
+  ip_range_pods              = "subnet-pods"
   http_load_balancing        = false
   network_policy             = true
   horizontal_pod_autoscaling = true
