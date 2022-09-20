@@ -22,18 +22,21 @@ module "network" {
       subnet_name   = "subnet-03"
       subnet_ip     = "10.16.64.0/19"
       subnet_region = var.region
-    },
-    {
-      subnet_name   = "subnet-pods"
-      subnet_ip     = "10.16.160.0/19"
-      subnet_region = var.region
-    },
-    {
-      subnet_name   = "subnet-services"
-      subnet_ip     = "10.16.192.0/19"
-      subnet_region = var.region
     }
   ]
+
+  secondary_ranges = {
+    "subnet-01" = [
+      {
+        range_name    = "subnet-pods"
+        ip_cidr_range = "10.16.160.0/19"
+      },
+      {
+        range_name    = "subnet-services"
+        ip_cidr_range = "10.16.192.0/19"
+      }
+    ]
+  }
 
   routes = [
     {
